@@ -1,0 +1,33 @@
+原题：
+Given an array of integers, return indices of the two numbers such that they add up to a specific target.
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
+Example:
+Given nums = [2, 7, 11, 15], target = 9,
+
+Because nums[0] + nums[1] = 2 + 7 = 9,
+return [0, 1].
+
+注意点：不能直接两层暴力for循环，会超时！！！还有最后要得到索引，不是元素值
+
+解决方法：使用HashMap存储数组的值和索引，元素值-->Key，元素索引-->Value
+
+思路：
+class Solution {
+   public int[] twoSum(int[] nums, int target) {
+        HashMap<Integer,Integer> m=new HashMap<Integer,Integer>();    //创建哈希表对象m
+        for(int i=0;i<nums.length;i++){
+            m.put(nums[i],i);   //哈希表对象m用来存储nums数组的值和索引
+        }
+        int[] index=new int[2];   //建立存放所求索引的数组index
+        for(int i=0;i<nums.length;i++){
+            int t=target-nums[i];   //nums[i]是其中一个值，t是另一个值，二者和为target
+            if(m.containsKey(t) && m.get(t)!=i){  //如果哈希表中包含key=t,且t对应的value不等于i  （两个数的索引应该不同）
+                index[0]=m.get(t);       //则可以得到所求的两个索引
+                index[1]=i;
+            }
+        }
+        return index;
+    }
+  
+}
+
