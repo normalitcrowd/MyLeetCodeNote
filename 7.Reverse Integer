@@ -9,3 +9,37 @@ Output: -321
 Example 3:
 Input: 120
 Output: 21
+
+注意点： 溢出问题--->给的数字为32位的，即用int即可，但是反转之后很有可能超过2^31-1，这时候就需要long类型
+
+解决方法：
+    我的想法：将数字反转 转化为 字符串反转，因为StringBUffer类里有现成的反转方法：reverse()
+        实现代码：
+           public int reverse(int x) {
+	       	 int temp=Math.abs(x);                    //temp---x取绝对值
+		       String str=Integer.toString(temp);       //str--- temp数字 转换为 字符串
+		       StringBuffer sb=new StringBuffer(str);   //sb-----str装入StringBuffer容器，因为该容器里有字符串反转函数reverse!!!!!!!!
+		       String result=sb.reverse().toString();   //result----sb反转后,再用toString()转换为字符串
+		
+		       if(Long.parseLong(result) > Integer.MAX_VALUE) {   //考虑溢出情况---如果反转后的数字比int型的最大值大，就直接返回“0”
+			     result="0";  
+		       }	
+	         return x>0 ? Integer.parseInt(result) : -Integer.parseInt(result);	 
+	         }  
+           
+           使用eclipse运行看似没问题，但是提交到系统里就出错了，出现NumberFormatException ，比如输入 234555321-这种情况没有排除掉，
+           增加捕获异常的代码后仍然是这种运行时错误
+           
+     大神的想法：直接求余   
+         实现代码：
+           public int reverse(int x) {
+           long r = 0;
+		       while(x != 0){
+			     r = r*10 + x%10;
+			     x /= 10;
+		       }
+		       if(r >= Integer.MIN_VALUE && r <= Integer.MAX_VALUE)
+		       return (int)r;
+		       else
+			     return 0;
+           }
