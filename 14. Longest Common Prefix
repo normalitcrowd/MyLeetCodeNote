@@ -1,0 +1,51 @@
+题目描述：
+Write a function to find the longest common prefix string amongst an array of strings.
+If there is no common prefix, return an empty string "".
+Example 1:
+Input: ["flower","flow","flight"]
+Output: "fl"
+Example 2:
+Input: ["dog","racecar","car"]
+Output: ""
+Explanation: There is no common prefix among the input strings.
+
+思路：首先找出字符串数组中长度最短的字符串----->将这个最短字符串作为参照，找出最长的共有前缀
+
+实现：
+public String longestCommonPrefix(String[] strs) {
+        //先判断特殊情形
+	if(strs.length<1 || strs==null) {   //没有元素返回空字符串
+		return "";
+	}
+	if(strs.length==1) {  //只有一个元素，则共有前缀就是这元素本身
+		return strs[0];
+	}
+	else {
+		//首先找到字符串数组中长度最短的字符串----这最有可能是共有前缀---接下来作为参照对象
+		int shortestIndex=0;  //定义元素最短的索引值，初始值为第一个元素的索引值
+        int shortestLen=strs[0].length();   //定义字符串数组中最短的字符串的长度，初始值为第一个字符串的长度
+        for(int i=0;i<strs.length;i++) {
+        	int curlen=strs[i].length();   //定义当前遍历到的字符串的长度
+        	if(curlen<shortestLen) {  //如果遍历到的字符串比第一个字符串短
+        		shortestLen=curlen;   //则把当前长度赋值给最短长度
+        		shortestIndex=i;    //最短长度的字符串的索引就是当前这个i
+        	}
+        }
+        
+        //然后通过indexOf比对字符串的字符，找出最长的共有前缀
+        String sub=strs[shortestIndex];   //sub----最短的字符串
+        for(int i=0;i<strs.length;i++) {
+        	while(strs[i].indexOf(sub)!=0) {    
+        	//关于indexOf:    flow.indeOf(flo)=0  ||   flow.indeOf(lo)=1;  ||flow.indexOf(fat)=-1
+        	//关于substring:  截取子串，  参数1是开始截取索引（包含），参数2是结束截取索引（不包含）
+        		sub=sub.substring(0, sub.length()-1);
+        	/*遍历字符串数组的每个字符串时，
+        	每当发现有 indexOf(最短字符串)！=0的字符串（即，该字符串和最短字符串不是从第一个字符开始共有）
+        	就把截取的结束参数位置-1
+        	*/
+        	}
+        }
+        return sub;
+	  }
+	
+  }
