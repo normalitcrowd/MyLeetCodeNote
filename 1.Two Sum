@@ -1,4 +1,4 @@
-原题：
+题目描述：
 Given an array of integers, return indices of the two numbers such that they add up to a specific target.
 You may assume that each input would have exactly one solution, and you may not use the same element twice.
 Example:
@@ -9,9 +9,9 @@ return [0, 1].
 
 注意点：不能直接两层暴力for循环，会超时！！！还有最后要得到索引，不是元素值
 
-解决方法：使用HashMap存储数组的值和索引，元素值-->Key，元素索引-->Value
+思路：使用HashMap存储数组的值和索引，元素值-->Key，元素索引-->Value
 
-思路：
+实现：
 class Solution {
    public int[] twoSum(int[] nums, int target) {
         HashMap<Integer,Integer> m=new HashMap<Integer,Integer>();    //创建哈希表对象m
