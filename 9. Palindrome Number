@@ -1,4 +1,4 @@
-原题：
+题目描述：
 Determine whether an integer is a palindrome. An integer is a palindrome when it reads the same backward as forward.
 Example 1:
 Input: 121
@@ -12,11 +12,10 @@ Input: 10
 Output: false
 Explanation: Reads 01 from right to left. Therefore it is not a palindrome.
 
-注意点：无
 
-解决方法：在第7题反转整数的基础上稍作修改即可
+思路：在第7题反转整数的基础上稍作修改即可
 
-思路：
+实现：
 class Solution {
     public boolean isPalindrome(int x) {
 	
