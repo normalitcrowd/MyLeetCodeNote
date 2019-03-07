@@ -1,0 +1,45 @@
+原题：
+Determine whether an integer is a palindrome. An integer is a palindrome when it reads the same backward as forward.
+Example 1:
+Input: 121
+Output: true
+Example 2:
+Input: -121
+Output: false
+Explanation: From left to right, it reads -121. From right to left, it becomes 121-. Therefore it is not a palindrome.
+Example 3:
+Input: 10
+Output: false
+Explanation: Reads 01 from right to left. Therefore it is not a palindrome.
+
+注意点：无
+
+解决方法：在第7题反转整数的基础上稍作修改即可
+
+思路：
+class Solution {
+    public boolean isPalindrome(int x) {
+	
+	if(x<0) {          //排除负数情况----整数反转函数并不能识别这种情况
+		return false;
+	}
+	else 
+	if(x==reverse(x))   //直接调用整数反转函数，看x反转前后是否相等
+		return true;
+	else
+		return false;
+
+}
+
+public int reverse(int x){      //整数反转的函数-----负数反转，负号还是在前面 / 对于末尾有0的数字，反转后会去掉前面的0
+	long r = 0;
+	while(x != 0){
+		r = r*10 + x%10;
+		x /= 10;
+	}
+	if(r >= Integer.MIN_VALUE && r <= Integer.MAX_VALUE)
+		return (int)r;
+	else
+		return 0;
+}
+}
