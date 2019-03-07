@@ -1,0 +1,70 @@
+题目描述：
+Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M.
+Symbol       Value
+I             1
+V             5
+X             10
+L             50
+C             100
+D             500
+M             1000
+For example, two is written as II in Roman numeral, just two one's added together. Twelve is written as, XII, which is simply X + II. The number twenty seven is written as XXVII, which is XX + V + II.
+Roman numerals are usually written largest to smallest from left to right. However, the numeral for four is not IIII. Instead, the number four is written as IV. Because the one is before the five we subtract it making four. The same principle applies to the number nine, which is written as IX. There are six instances where subtraction is used:
+I can be placed before V (5) and X (10) to make 4 and 9. 
+X can be placed before L (50) and C (100) to make 40 and 90. 
+C can be placed before D (500) and M (1000) to make 400 and 900.
+Given a roman numeral, convert it to an integer. Input is guaranteed to be within the range from 1 to 3999.
+Example 1:
+Input: "III"
+Output: 3
+Example 2:
+Input: "IV"
+Output: 4
+Example 3:
+Input: "IX"
+Output: 9
+Example 4:
+Input: "LVIII"
+Output: 58
+Explanation: L = 50, V= 5, III = 3.
+Example 5:
+Input: "MCMXCIV"
+Output: 1994
+Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
+
+思路：罗马字母转整数，有着一一对应的关系，所以可以考虑使用HashMap，用键值对存储对应关系
+
+实现：class Solution{
+     public int romanToInt(String s){
+     if(s==null || s.length==0) { return 0;}    //首先判断空字符串情况
+     
+     HashMap<Character,Integer> m=new HashMap<>();  //创建HashMap对象m，将字母作为key，数字作为value
+     //将字母与数字的对应关系放进HashMap里
+     m.put('I', 1);
+		 m.put('V', 5);
+		 m.put('X', 10);
+		 m.put('L', 50);
+		 m.put('C', 100);
+		 m.put('D', 500);
+		 m.put('M', 1000);
+     
+     int len=s.length();   //len---输入的字符串的长度
+     int res=m.get(s.charAt(len-1));        //res---初始值是输入的字符串的最后一个字母所代表的数值
+     //s.toCharArray()是包含字符串所有字符的数组，charAt(index)--->定位到对应下标的元素值，范围是（0，len-1）
+     
+     //遍历字符数组，判断应该 加 还是 减
+     for(int i=len-2;i>=0;i--){  //res现在是最后一个字母的数值，所有从倒数第二个从后向前遍历字符数组
+     if(m.get(s.charAt(i+1)) >m.get(s.charAt(i))){  //如果后面的字母数值 > 前面的字母数值
+           res=res-m.get(s.chatAt(i));   //就减去前面的字母数值
+          }
+     else{
+           res=res+m.get(s.chatAt(i));  //否则加上前面的字母数值
+          }
+        }
+        return res;
+       }
+
+     }
+     
+系统运行结果：
+Runtime: 38 ms, faster than 77.61%
