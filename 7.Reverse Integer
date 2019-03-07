@@ -1,4 +1,4 @@
-原题：
+题目描述：
 Given a 32-bit signed integer, reverse digits of an integer.
 Example 1:
 Input: 123
@@ -12,7 +12,7 @@ Output: 21
 
 注意点： 溢出问题--->给的数字为32位的，即用int即可，但是反转之后很有可能超过2^31-1，这时候就需要long类型
 
-解决方法：
+思路：
     我的想法：将数字反转 转化为 字符串反转，因为StringBUffer类里有现成的反转方法：reverse()
         实现代码：
            public int reverse(int x) {
