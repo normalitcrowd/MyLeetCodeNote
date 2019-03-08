@@ -1,0 +1,58 @@
+题目描述：
+Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+An input string is valid if:
+Open brackets must be closed by the same type of brackets.
+Open brackets must be closed in the correct order.
+Note that an empty string is also considered valid.
+Example 1:
+Input: "()"
+Output: true
+Example 2:
+Input: "()[]{}"
+Output: true
+Example 3:
+Input: "(]"
+Output: false
+Example 4:
+Input: "([)]"
+Output: false
+Example 5:
+Input: "{[]}"
+Output: true
+
+思路：首先用HashMap的键值对把括号的匹配规则装进去
+      再用栈来匹配括号：遇到左括号--->进栈
+                      遇到右括号--->栈是否为空？空就不能匹配-----false
+                                              不空就看这个右括号和栈顶元素是否匹配--->匹配就弹出栈顶元素
+                                                                                   不匹配就-----false
+                      最后判断栈内元素是否都弹出了，即是否栈空，空就返回true,不空false
+                    
+                    
+实现：
+public class ValidParentheses {
+	public boolean isValid(String s) {
+		HashMap<Character,Character> pair=new HashMap<>();   //创建HashMap对象来装括号匹配规则
+		pair.put('}', '{');  //右括号放进key,  左括号放进value
+		pair.put(']', '[');
+		pair.put(')', '(');
+		
+		Stack<Character> stack=new Stack<>();   //创建栈对象
+		for(int i=0;i<s.length();i++) {
+			char c=s.charAt(i);                   //c---字符串中每个字符
+			
+			if(pair.containsValue(c)) {     //如果遇到了左括号
+				stack.push(c);                //左括号进栈
+			}
+			else {                          //如果遇到右括号
+				if(stack.isEmpty() || stack.peek()!=pair.get(c)) {   //如果栈空  或者 栈顶元素和当前右括号不匹配
+                                                            //（pair.get(key)---返回相应key的value值,即返回与当前右括号的匹配的左括号）
+					return false;      //匹配失败
+				}
+				else {           //若栈顶和当前右括号匹配成功了
+					stack.pop();   //就把栈顶元素弹出栈
+				}
+			}
+		}
+		return stack.isEmpty();  //最终判断栈内元素是否完全弹出，栈空就匹配，不空说明没有匹配
+		
+	}
