@@ -1,0 +1,51 @@
+题目描述：
+Design a stack that supports push, pop, top, and retrieving the minimum element in constant time. 
+push(x) -- Push element x onto stack. 
+pop() -- Removes the element on top of the stack. 
+top() -- Get the top element. 
+getMin() -- Retrieve the minimum element in the stack. 
+
+Example:
+MinStack minStack = new MinStack();
+minStack.push(-2);
+minStack.push(0);
+minStack.push(-3);
+minStack.getMin();   --> Returns -3.
+minStack.pop();
+minStack.top();      --> Returns 0.
+minStack.getMin();   --> Returns -2.
+
+思路：使用Java自带的栈（栈方法），创建两个栈：一个装全部元素的正常栈
+                                          一个只装每次有元素进栈时，当前的最小元素--->所以最小栈的栈顶是所有元素中最小的
+
+实现：
+class MinStack{
+//新建两个栈
+Stack<Integer> stack=new Stack<>();   //装全部元素的正常栈
+Stack<Integer> minStack=new Stack<>(); //只装每次有元素进栈时，当前的最小元素
+
+//入栈---->stack是无条件可以入栈的，需要判断待入栈的元素是否可以进入minStack
+public void push(int x){
+if(minStack.isEmpty() || x<=minStack.peek()){     //如果最小栈为空，或者待入栈元素x比最小栈的栈顶还要小
+minStack.push(x);                                 //就让x进入最小栈                      
+}
+stack.push(x);   //当然，每一个元素都必须要进入这个正常栈
+}
+
+//出栈---->stack是无条件可以让栈顶出栈的，需要判断待minStack的栈顶是否可以出栈（二者栈顶一致才可都出栈）
+public void pop(){
+if(minStack.peek().equals(stack.peek())){  //如果最小栈和正常栈的栈顶一样（即都是当下的最小元素）
+minStack.pop();                            //则可以让最小栈也弹出其栈顶元素
+}
+stack.pop();  //正常栈弹出栈顶   
+}
+
+public int top(){
+return stack.peek();  //直接返回正常栈的栈顶
+}
+
+public int getMin(){
+return minStack.peek();  //最小栈的栈顶即为所有元素中最小的
+}
+
+}
