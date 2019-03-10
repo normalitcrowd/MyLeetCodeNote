@@ -1,0 +1,45 @@
+题目描述：
+Given an array nums and a value val, remove all instances of that value in-place and return the new length.
+Do not allocate extra space for another array, you must do this by modifying the input array in-place with O(1) extra memory.
+The order of elements can be changed. It doesn't matter what you leave beyond the new length.
+Example 1:
+Given nums = [3,2,2,3], val = 3,
+
+Your function should return length = 2, with the first two elements of nums being 2.
+
+It doesn't matter what you leave beyond the returned length.
+Example 2:
+Given nums = [0,1,2,2,3,0,4,2], val = 2,
+
+Your function should return length = 5, with the first five elements of nums containing 0, 1, 3, 0, and 4.
+
+Note that the order of those five elements can be arbitrary.
+
+It doesn't matter what values are set beyond the returned length.
+
+思路：定义一个计数变量
+     遍历数组，若当前值与val不同，就用当前值覆盖计数变量的位置（即把计数变量的位置值变成当前遍历的值），再把计数变量+1
+
+举例分析：
+int a[]={0,1,2,2,3,4};  val=2   a.length=6,i<6
+(1)i=0,res=0   a[0]=0!=2  --->a[res++]=a[0]  =a[i]=a[0]  =0   res=1
+(2)i=1,res=1   a[1]=1!=2  --->a[res++]=a[1]  =a[i]=a[1]  =1   res=2
+(3)i=2,res=2   a[2]=2     
+(4)i=3,res=2   a[3]=2
+(5)i=4,res=2   a[4]=3!=2  --->a[res++]=a[2]  =a[i]=a[4]  =3   res=3
+(6)i=5,res=3   a[5]=4!=2  --->a[res++]=a[3]  =a[i]=a[5]  =4   res=4
+(7)i=6 跳出循环
+最终，计数变量res=4,即为去掉值为val的元素后剩下的元素个数
+
+
+
+实现：
+public int removeElement(int[] nums,int val){
+int res=0;   //计数变量-----记录与value值不等的元素个数
+for(int i=0;i<nums.length;i++){
+if(nums[i]!=val){
+nums[res++]=nums[i];  //如果当前的值和给定值不同，我们就把当前值覆盖计数变量的位置，并将计数变量加1
+}
+}
+return res;  //返回去除值为val后数组剩下的元素个数
+}
