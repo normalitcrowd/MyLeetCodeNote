@@ -1,0 +1,39 @@
+题目描述：
+Given a sorted array nums, remove the duplicates in-place such that each element appear only once and return the new length.
+Do not allocate extra space for another array, you must do this by modifying the input array in-place with O(1) extra memory.
+（不要为另一个数组分配额外的空间，您必须使用O(1)额外内存修改输入数组）
+Example 1:
+Given nums = [1,1,2],
+
+Your function should return length = 2, with the first two elements of nums being 1 and 2 respectively.
+
+It doesn't matter what you leave beyond the returned length.
+
+思路：使用两个一前一后（不一定紧跟着）的指针 i,j 逐个定位到数组元素，比较是否相等 (i在前，j在后）
+      nums[i]!=nums[j]---->未重复，把nums[i+1]的值变成nums[j]的值
+      nums[i]=nums[j] ---->重复了，j+1,跳过这个重复值
+
+举例分析：
+int[] a={0,1,1,2,3,3}   ---->应当输出长度为4
+(1)i=0,j=1    a[0]!=a[1] --->i=i++=1,a[1]=a[1]=1
+(2)i=1,j=2    a[1]=a[2]  --->j=j++=3
+(3)i=1,j=3    a[1]!=a[3] --->i=i++=2,a[2]=a[3]=2    a={0,1,2,2,3,3}
+(4)i=2,j=4    a[2]!=a[4] --->i=i++=3,a[3]=a[4]=3    a={0,1,2,3,3,3}
+(5)i=3,j=5    a[3]=a[5]  --->j=j++=6=a.length--->跳出循环
+最终i=3,无重复数组长度为i+1=4，正确
+ 
+实现：
+ public int removeDuplicates(int[] nums) {
+ //先异常情形处理
+ if(nums.length==0) return 0;
+ int i=0;  //跑的慢的指针----->定义在循环外面是为了最后用i+1表示无重复数组的长度
+ for(int j=0;j<nums.length;j++){
+ if(nums[j]!=nums[i]){
+ i++;
+ nums[i]=nums[j];
+ }
+//隐含的else：若nums[j]=nums[i]----->返回到for语句，j++,来跳过这个重复值
+//不过无论nums[i],[j]是否相等，每次循环j都要+1
+ }
+ return i+1;  //只能返回无重复值数组的长度（最终数组被改变了，但并不是无重复值的数组。）
+ }
