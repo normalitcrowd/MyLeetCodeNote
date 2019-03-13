@@ -17,8 +17,63 @@ Explanation:
     For number 4 in the first array, there is no next greater number for it in the second array, so output -1.
     
 思路：
-定义个变量start--->
-（1）不使用HashMap
-（2）使用HashMap
+方法（1）不使用HashMap
+先定义个整数数组来存储最终结果---长度和nums1一致
+开始判断：定义个变量start作为标记--->将start作为nums2的索引，标记 找到nums2中与nums1某个元素nums1[i]相等时 的元素的索引
+         然后再从这个start索引开始，到nums2结束，寻找是否有比nums1中某元素nums1[i]大的元素，
+         如果没有较大的就返回-1,有较大的就返回第一个较大的元素值————>注意：这里的循环一定要及时跳出，只要找到符合条件的一个元素就停止循环！！！
+
+方法（2）使用HashMap
+整体思路差不多，就是用HashMap把nums2的值和索引装进去：key->元素值，value->元素索引
+直接就能获取到方法（1）中类似start的值---->hashmap.get(nums1[i]) :直接定位出nums2中元素值为nums1[i]的元素的索引
 
 实现：
+（1）
+public int[] nextGreaterElement2(int[] nums1, int[] nums2){
+int[] res=new int[nums1.length];  //定义存放结果的数组res
+
+if(nums1.length==0) return new int[0];  //异常情形
+
+for(int i=0;i<nums1.length;i++){
+   int start=0;    //要放在循环里面！！！！！！！！！
+//确定对于nums1中每个元素对应的start值
+while(nums1[i]!=nums2[start]){
+    start++;    //对于nums1中的每一个元素值，nums2都从索引0开始查找是否有元素 与nums1中元素相等
+    }
+ //从start开始查找nums2后面的那些元素是否有比nums1[i]大的
+   for(int j=start;j<nums2.length;j++){
+      if(nums1[i]<nums2[j]){
+      res[i]=nums2[j];   //如果有较大的元素，那最终结果就是这个元素
+      break;    //找到一个元素后，必须跳出循环
+      }
+      else{
+      res[i]=-1;   //若不存在较大元素，只能返回-1
+      }
+   }
+}
+return res;   //最后返回res数组
+}
+
+
+（2）
+public int[] nextGreaterElement2(int[] nums1, int[] nums2){
+int[] res=new int[nums1.length];  //定义存放结果的数组res
+HashMap<Integer,Integer> m=new HashMap<>();  
+if(nums1.length==0) return new int[0];  //异常情形
+for(int i=0;i<nums2.length;i++){
+m.put(nums2[i],i);
+}
+
+for(int i=0;i<nums1.length;i++){
+for(int j=m.get(nums1[i]);j<nums2.length;j++){   //hashmap.get(nums1[i]) :直接定位出nums2中元素值为nums1[i]的元素的索引,相当于方法1的start
+if(nums1[i]<nums2[j]){
+res[i]=nums2[j];
+break;
+}
+else{
+res[i]=-1;
+}
+}
+}
+return res;
+}
