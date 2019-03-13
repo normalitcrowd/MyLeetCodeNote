@@ -17,5 +17,8 @@ Explanation:
     For number 4 in the first array, there is no next greater number for it in the second array, so output -1.
     
 思路：
+定义个变量start--->
+（1）不使用HashMap
+（2）使用HashMap
 
 实现：
