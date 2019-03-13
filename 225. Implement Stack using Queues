@@ -14,6 +14,55 @@ stack.pop();   // returns 2
 stack.empty(); // returns false
 
 
-思路：
+思路：队列实现栈，先进先出——>先进后出
+使用两个队列，一个队列是正常队列Q，用来存放所有栈元素-----双向队列deque，需要取它的尾元素
+             另一个是栈顶队列topQ，用来存放实时的栈顶元素，里面只能装一个栈顶元素-----普通单向队列就行了
+每次进栈，把新元素插入到栈顶队列topQ里--->现在不能确定此时topQ里到底有没有元素，但是栈顶必须保持实时性，要让所有新进栈的元素都到topQ里过一遍
+         再判断栈顶队列topQ是否为空，为空就不用动，这个新元素就是栈顶队列里唯一的元素，即栈顶
+                                  若topQ不空，需要把里面的元素（即上一把的栈顶，现在落伍了，不再是栈顶）移到正常队列的尾部
+                                  （新元素是topQ的尾，原来的栈顶在topQ的头，具体操作：移除topQ头元素，并插入到Q的尾部）
+                                                                                 
+每次出栈，也要判断栈顶队列topQ是否为空，为空说明当前没有元素请求进栈，所以栈顶元素还未放进栈顶队列topQ，还在正常队列的尾部呢
+                                     不为空说明栈顶就在topQ里
+注意：创建队列时，Java中并没有Queue类，是LinkedList类实现了Queue接口
 
 实现：
+public class ImplementStackUsingQueues {
+Deque<Integer> Q=new LinkedList<>();   //正常队列
+Queue<Integer> topQ=new LinkedList<>();  //栈顶队列
+
+//进栈
+public void push(int x){
+      topQ.offer(x);    //把新元素插入到栈顶队列topQ里
+      //再判断栈顶队列topQ是否为空，为空就不用动，这个新元素就是栈顶队列里唯一的元素，即栈顶
+      while(!topQ.isEmpty()){   //若topQ不空，需要把里面的元素（即上一把的栈顶，现在落伍了，不再是栈顶）移到正常队列的尾部
+      Q.offer(topQ.poll());  
+      }
+}
+
+//出栈
+public int pop(){
+    if(!topQ.isEmpty()){
+    return topQ.poll();   //栈顶在topQ里就直接获取并移除topQ头元素
+    }
+    else{
+    return Q.pollLast();  //栈顶不在topQ里，就是在Q的尾部，双向队列方法：pollLast：获取并移除最后一个元素
+    }
+}
+
+//栈顶
+public int top(){
+    if(!topQ.isEmpty()){
+    return topQ.peek();   //栈顶在topQ里就直接获取但不移除topQ头元素
+    }
+    else{
+    return Q.getLast();  //栈顶不在topQ里，就是在Q的尾部，双向队列方法：getLast:获取最后一个元素但不移除
+    }
+}
+
+//判空
+public boolean empty() {
+        return Q.isEmpty() && topQ.isEmpty();
+    }
+
+}
