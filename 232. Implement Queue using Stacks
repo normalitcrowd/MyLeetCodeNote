@@ -13,6 +13,47 @@ queue.peek();  // returns 1
 queue.pop();   // returns 1
 queue.empty(); // returns false
 
-思路：
+思路：用栈实现队列，先进后出——>先进先出
+     使用两个栈----stackIn用来入队--->不用考虑太多，元素直接入队（即直接进入stackIn栈）
+                  stackOut用来出队--->想要先进入stackIn的元素（栈底元素）先出队，需要把stackIn的元素全部弹进stackOut里
+                                     这样，元素顺序就正好相反了，此时再让stackOut栈顶出栈，即代表队头元素出队了
+                                    （注意：一定要在stackOut为空时才能进行上述操作，不空的话又进又出就乱套了）
+
 
 实现：
+public class ImplementQueueusingStacks {
+Stack<Integer> stackIn=new Stack<>();
+Stack<Integer> stackOut=new Stack<>();
+
+//入队
+public void push(int x){
+stackIn.push(x);
+}
+
+//出队
+public int pop(){
+if(stackOut.isEmpty()){   //确保在stackOut为空的情况下才行执行以下操作
+//把stackIn的元素全部逐个弹进stacOut
+while(!stackIn.isEmpty()){
+stackOut.push(stackIn.pop());   //不停获取并移除stackIn的栈顶，并压入stackOut
+}
+}
+return stackOut.pop();  //元素转移完成后，获取并移除stackOut的栈顶元素
+}
+
+//获取队头元素-----和出队差不多，就是栈顶元素不用移除
+public int peek(){
+if(stackOut.isEmpty()){  
+
+while(!stackIn.isEmpty()){
+stackOut.push(stackIn.pop());  
+}
+}
+return stackOut.peek();  //元素转移完成后，获取但不移除stackOut的栈顶元素
+}
+
+//判空
+public boolean isEmpty(){
+return stackIn.isEmpty() && stackOut.isEmpty();
+}
+}
