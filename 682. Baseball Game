@@ -31,6 +31,56 @@ Round 5: You could get 9 points. The sum is: 8.
 Round 6: You could get -4 + 9 = 5 points. The sum is 13.
 Round 7: You could get 9 + 5 = 14 points. The sum is 27.
 
-思路：
+思路：栈
+分四种情况讨论：D、C、+、整数   
+----定义个最终结果变量：总得分sum----->sum需要在下面每种情况中实时表示出来（比较清晰）
+
+如果是+：获取栈内最上面两个元素值（用两个临时变量来保存栈元素的值--先把它们pop出来获取值，最后再push回去恢复栈原样），
+        用这两个值表示出“+”进栈后代表的值，再把这个值也push进栈
+如果是D：获取栈顶元素值，pop出来用临时变量保存其值，最后再push回去；根据这个值表示出“D”进栈后代表的值，再把这个值也push进栈
+如果是C：获取栈顶元素值，pop出来用临时变量保存其值；不用再push回去！！最后总分要把这个元素值给减掉
+如果是整数：就把字符转换为整数 Integer.parseInt(obj[i])，再把这个数字push进栈
+
+
 
 实现：
+public class BaseballGamePointer {
+Stack<Integer> stack=new Stack<>();
+int sum=0;
+public int baseballGame(String[] ops) {
+for(int i=0;i<ops.length;i++){
+   if(ops[i].equals("+")){
+     int temp2=stack.pop();   //弹出当前栈顶，并把值保存到临时变量temp2里
+     int temp1=stack.pop();    //弹出当前栈顶，并把值保存到临时变量temp1里
+     int temp_sum=temp2+temp1;  //表示出“+”进栈后代表的数值
+     sum+=temp_sum;   //表示出这个阶段的总得分
+     //再push进栈;注意顺序
+     stack.push(temp1);
+     stack.push(temp2);
+     stack.push(temp_sum);
+    }
+    
+   else if(ops[i].equals("D")){
+     int temp=stack.pop();
+     int temp_double=temp*2;
+     sum+=temp_double;
+     
+     stack.push(temp);
+     stack.push(temp_double);
+    }
+    
+    else if(ops[i].equals("C")){
+     int temp_cancel=stack.pop();  //C进栈后，直接把之前的数值删掉不用再进栈了
+     sum-=temp_cancel;  //表示出sum
+    }
+    
+    else{   
+      int temp_num=Integer.parseInt(ops[i]);   //最后一种遇到整数字符，转换为整数
+      sum+=temp_num;
+      stack.push(temp_num);   
+     }
+    
+   }
+return sum;
+  }
+}
