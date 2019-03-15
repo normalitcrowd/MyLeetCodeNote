@@ -21,6 +21,29 @@ Note:
 1 <= T.length <= 200
 S and T only contain lowercase letters and '#' characters.
 
-思路：
+思路：遇到一个“#”就退一格（删除前面一个元素），遇到两个“#”就退两格-------->用栈
+写一个函数，参数是字符串。返回一个字符串最终得到的字符栈。
+每个字符串调用该函数，返回多个栈。
+直接用 栈.equals(栈)  比较栈是否相同
+
 
 实现：
+public boolean backspaceCompare(String S, String T) {
+   return S.compute().equals(T.compute());
+}
+
+public Stack<Character> compute(String s){   //返回类型是Stack！！！！
+Stack<Character> stack=new Stack<>();
+  for(char c:s.toCharArray()){
+    if(c!='#'){
+     stack.push(c);
+    }
+    else{
+     if(!stack.isEmpty()){
+      stack.pop();
+     }
+    }
+  }
+return stack;
+}
+
