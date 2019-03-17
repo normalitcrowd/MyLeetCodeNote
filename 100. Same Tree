@@ -1,0 +1,56 @@
+题目描述：
+Given two binary trees, write a function to check if they are the same or not.
+Two binary trees are considered the same if they are structurally identical and the nodes have the same value.
+Example 1:
+Input:     1         1
+          / \       / \
+         2   3     2   3
+
+        [1,2,3],   [1,2,3]
+
+Output: true
+Example 2:
+Input:     1         1
+          /           \
+         2             2
+
+        [1,2],     [1,null,2]
+
+Output: false
+Example 3:
+Input:     1         1
+          / \       / \
+         2   1     1   2
+
+        [1,2,1],   [1,1,2]
+
+Output: false
+
+思路：递归————每个子树都可以看成一棵树
+      一直比较根结点。先比较根结点值，再利用递归方法比较左右子树的根结点....
+      一旦根结点不相等就返回false.
+
+实现：
+//树结构定义
+  class TreeNode {
+	      int val;
+	      TreeNode left;
+	      TreeNode right;
+	      TreeNode(int x) { val = x; }
+	  }
+
+//判断两棵树是否一样
+  public class SameTree{
+    public boolean isSameTree(TreeNode p, TreeNode q){
+      //异常情形----空树
+      if(p==null && q==null) return true;  //两树皆空
+      if(p==null || q==null) return false; //只有一棵树为空，另一棵非空（本来有三种情况，排除掉上面那个情况）
+      
+      if(p.val==q.val) {  //比较根结点值
+         return isSameTree(p.left,q.left) && isSameTree(p.right,q.right);  //递归。比较p和q的左子树、右子树。。二者都符合条件才能返回true
+      }
+      else{
+         return false;  //根结点不等就返回false
+      }
+    }
+  }
