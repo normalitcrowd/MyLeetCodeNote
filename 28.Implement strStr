@@ -11,6 +11,63 @@ Clarification:
 What should we return when needle is an empty string? This is a great question to ask during an interview.
 For the purpose of this problem, we will return 0 when needle is an empty string. This is consistent to C's strstr() and Java's indexOf().
 
-思路：
+思路：从text串中找到pattern串，并返回text串中首次出现pattern串的位置。若不存在就返回-1
+      ————————典型的字符串匹配问题----朴素（BP）算法太慢了，时间复杂度为O(m*n)---->使用KMP算法，时间复杂度为O(m+n)
+      
+KMP算法：使用next[]数组表示出pattern串的最长公共前后缀--->可以跳过相当一段不必要的字符匹配
+step 1: 求出next[]数组
+        1) next[]数组长度 = pattern串长度
+        2) 一开始，next[0]=0, j=0,i=1    j放在pattern字符数组第一个元素上面，i放在pattern字符数组第二个元素上面
+        3) 然后比较 i,j 位置上的元素，若相同：j=j++, next[i]=j(增加后的j), i++ 
+                                    若不同：j=next[j-1],  j后退到j前面一个next数组元素值， 直到i,j位置上元素相同，i++
+        4) 填满next[]数组
+
+step 2: 比较text串和pattern串, i为text串下标，j为pattern串下标
+        1) 逐个比较两个串的元素，若相同：i++, j++ ，继续向前比较
+                               若不同：j=next[j-1]，子串下标退回到其前一个元素对应的next[]值，再和母串上次匹配中断的地方继续比较
+        2) 直到  子串的下标 j==子串长度时，停止匹配
+        2) 返回子串首次出现的下标  return i-j+1
+   
+        
 
 实现：
+public static int[] kmpnext(String needle){
+    int[] next=new int[needle.length()];
+    next[0]=0;
+    for(int j=0,i=1;i<needle.length();i++){
+        while( j>0 && needle.charAt(i) !=needle.charAt(j)){
+           j=next[j-1];
+        }
+        if(needle.charAt(i) ==needle.charAt(j)){
+           j++;
+        }
+        next[i]=j;
+    }
+    return next;
+}
+
+public int strStr(String haystack, String needle){
+    int[] next = kmpnext(needle);
+    for(int j=0,i=0;i<haystack.length();i++){
+       while( j>0 && needle.charAt(j)!=haystack.charAt(i)){
+           j=next[j-1];
+       }
+       if(needle.charAt(j)==haystack.charAt(i)){
+           j++;
+       }
+       if(j==needle.length()){
+          return i-j+1;
+       }
+    }
+    return -1;
+}
+
+
+
+
+
+
+
+
+
+
